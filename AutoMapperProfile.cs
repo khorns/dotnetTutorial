@@ -12,6 +12,9 @@ namespace tutorial
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
             CreateMap<UpdateCharacterDto, Character>();
+            
+            CreateMap<Article, GetArticleDto>();
+            CreateMap<Tag, TagDto>();
         }
     }
 }

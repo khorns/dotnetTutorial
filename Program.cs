@@ -1,6 +1,8 @@
 global using tutorial.Models; 
 global using tutorial.Services.CharacterService;
+global using tutorial.Services.ArticleService;
 global using tutorial.Dtos.Character;
+global using tutorial.Dtos.Article;
 global using AutoMapper;
 global using Microsoft.EntityFrameworkCore;
 global using tutorial.Data;
@@ -16,7 +18,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+
 
 var app = builder.Build();
 
