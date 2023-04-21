@@ -67,8 +67,8 @@ public class CharacterService : ICharacterService
 
         try
         {
-            var character = characters.FirstOrDefault(c => c.Id == updateCharacter.Id);
-            // var dbCharacters = await _context.Characters.FirstOrDefaultAsync(c => c.Id == updateCharacter.Id);
+            // var character = characters.FirstOrDefault(c => c.Id == updateCharacter.Id);
+            var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == updateCharacter.Id);
 
             if (character is null)
                 throw new Exception($"character with Id '${updateCharacter.Id}' is not found");
@@ -80,6 +80,8 @@ public class CharacterService : ICharacterService
             character.Defense = updateCharacter.Defense;
             character.Intelligence = updateCharacter.Intelligence;
             character.Class = updateCharacter.Class;
+
+            _context.SaveChanges();
             
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             
@@ -99,14 +101,19 @@ public class CharacterService : ICharacterService
 
         try
         {
-            var character = characters.FirstOrDefault(c => c.Id == id);
+            // var character = characters.FirstOrDefault(c => c.Id == id);
+            // var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+            var character = await _context.Characters.FindAsync(id);
 
             if (character is null)
-                throw new Exception($"character with Id '${id}' is not found");
+                throw new Exception($"character with Id '{id}' is not found");
 
-            characters.Remove(character);
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync();
+            // characters.Remove(character);
             
-            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            // serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            serviceResponse.Message = $"Successfully delete the character of Id {id}";
             
         }
         catch (Exception ex)
